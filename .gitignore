@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.tmp-pip/
+.tmp-build/
+build/
+dist/
+artifacts/
+.runtime/login_qr.png
+.runtime/session.cookies
+.runtime_web/
+.runtime_simple_page/
+
+# 独立部署中的凭证、数据库及本地日志
+.env
+.env.*
+!.env.example
+.runtime/
+*.cookies
+*.sqlite3
+*.sqlite3-*
+*.log
