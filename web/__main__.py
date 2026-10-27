@@ -85,7 +85,7 @@ def make_server(workbench, port=8767):
                     return self.send(workbench.account(parts[2]).login.copy())
                 except AppError as exc:
                     return self.send({'error': clean(exc)}, status=404)
-            files = {'/': 'index.html', '/static/style.css': 'style.css', '/static/app.js': 'app.js', '/static/rules.js': 'rules.js'}
+            files = {'/': 'index.html', '/static/style.css': 'style.css', '/static/app.js': 'app.js', '/static/rules.js': 'rules.js', '/static/theme.css': 'theme.css', '/static/theme.js': 'theme.js'}
             if path not in files:
                 return self.send({'error': '未找到页面'}, status=404)
             file = STATIC / files[path]
