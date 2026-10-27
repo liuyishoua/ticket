@@ -5,10 +5,10 @@
 沿用 DouYin_Spider Web 的原生 HTML/CSS/JavaScript、侧边导航和卡片布局，复用现有 Python 票务引擎。无需前端构建或新增生产依赖。
 
 ```bash
-python -m web --port 8767
+python -m web --port 20002
 ```
 
-访问 http://127.0.0.1:8767 。与原 GUI、简易验证页独立；不会导入它们的登录凭证或自动启动订单。
+访问 http://127.0.0.1:20002 。与原 GUI、简易验证页独立；不会导入它们的登录凭证或自动启动订单。
 
 ## 业务契约
 

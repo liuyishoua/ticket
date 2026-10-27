@@ -2,7 +2,7 @@
 
 本仓库提取自 bifrost/applications/ticket。Web 和票务引擎保持来源项目行为。
 
-- 启动：python3 start.py；已有依赖时 python -m web。端口8767，数据目录.runtime_web。
+- 启动：python3 start.py；已有依赖时 python -m web。端口20002，数据目录.runtime_web。
 - Web 没有演示模式参数；本机独立页面不另设密码；正式 HTTPS 入口先验证统一账号及应用授权，真实业务仍需扫码绑定12306账号。
 - 不启动真实订单、扫码或查询进行自动化验收；临时数据和模拟响应用于测试。
 - 不提交Cookie、Token、二维码、证件信息、会话文件、数据库或日志。

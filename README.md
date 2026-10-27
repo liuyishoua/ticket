@@ -1,5 +1,7 @@
 # Ticket · 12306 票务工作台
 
+> 文档中的 example.com 域名、192.0.2.* 地址、/opt/operator 路径及 20000 段端口均为示例，请按实际部署配置替换。私有账号配置与运行数据不随源码提交。
+
 [![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/License-PolyForm%20Noncommercial%201.0.0-orange)](LICENSE)
 
 从 `bifrost/applications/ticket` 提取的独立票务项目。
@@ -15,7 +17,7 @@ cd ticket
 python3 start.py
 ```
 
-首次自动创建 `.venv` 并安装依赖；成功后尝试打开 **http://127.0.0.1:8767**。
+首次自动创建 `.venv` 并安装依赖；成功后尝试打开 **http://127.0.0.1:20002**。
 Windows 可双击 `start.bat`，macOS 可双击 `start.command`，Linux 可运行 `./start.sh`。
 首次安装需要联网；按 Ctrl+C 停止服务。
 
@@ -32,7 +34,7 @@ python -m web
 修改端口或关闭自动打开浏览器：
 
 ```bash
-python3 start.py --port 8877 --no-browser
+python3 start.py --port 20026 --no-browser
 ```
 
 ## 功能
@@ -51,9 +53,9 @@ python3 start.py --port 8877 --no-browser
 
 以下图片来自独立 Web 服务的初始页面，未使用真实账号或订单。
 
-![车票查询工作台](docs/images/query.png)
+车票查询工作台（本地资料）
 
-![12306账号管理](docs/images/accounts.png)
+12306账号管理（本地资料）
 
 原 Qt 桌面界面也随仓库保留：
 
@@ -61,7 +63,7 @@ python3 start.py --port 8877 --no-browser
 
 ## 数据与运行
 
-默认监听 `127.0.0.1:8767`。数据位于 `.runtime_web/`，首次启动自动建库：
+默认监听 `127.0.0.1:20002`。数据位于 `.runtime_web/`，首次启动自动建库：
 
 - `workbench.sqlite3`：账号备注、任务配置、日志和会话诊断。
 - `sessions/`：按账号保存的登录会话凭证。
