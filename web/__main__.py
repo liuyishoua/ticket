@@ -1,3 +1,4 @@
+import hashlib
 """Run with python -m web. Binds only to loopback."""
 
 import argparse
@@ -33,18 +34,22 @@ def activity_snapshot(state):
 
 def make_server(workbench, port=8767):
     csrf = secrets.token_urlsafe(32)
+    from .page_assets import PageAssets
+    pages = PageAssets(STATIC)
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *_args):
             pass
 
-        def send(self, body, content_type='application/json', status=200):
+        def send(self, body, content_type='application/json', status=200, cache='no-store', etag=None):
             if not isinstance(body, bytes):
                 body = json.dumps(body, ensure_ascii=False).encode()
             self.send_response(status)
             self.send_header('Content-Type', content_type)
             self.send_header('Content-Length', str(len(body)))
-            self.send_header('Cache-Control', 'no-store')
+            self.send_header('Cache-Control', cache)
+            if etag:
+                self.send_header('ETag', etag)
             self.send_header('X-Content-Type-Options', 'nosniff')
             self.send_header('X-Frame-Options', 'DENY')
             self.end_headers()
@@ -89,10 +94,17 @@ def make_server(workbench, port=8767):
             if path not in files:
                 return self.send({'error': '未找到页面'}, status=404)
             file = STATIC / files[path]
-            body = file.read_bytes()
+            mime = (mimetypes.guess_type(str(file))[0] or 'text/plain') + '; charset=utf-8'
             if path == '/':
-                body = body.replace(b'__CSRF__', csrf.encode())
-            self.send(body, (mimetypes.guess_type(str(file))[0] or 'text/plain') + '; charset=utf-8')
+                html, _ = pages.render('index.html')
+                return self.send(html.encode().replace(b'__CSRF__', csrf.encode()), mime)
+            body = pages.content(files[path])
+            etag = '"' + hashlib.sha256(body).hexdigest() + '"'
+            query = parse_qs(urlparse(self.path).query)
+            cache = 'public, max-age=31536000, immutable' if query.get('asset_version') == [pages.version] else 'public, no-cache'
+            if self.headers.get('If-None-Match') == etag:
+                return self.send(b'', mime, status=304, cache=cache, etag=etag)
+            self.send(body, mime, cache=cache, etag=etag)
 
         def do_POST(self):
             if not self.allowed() or self.headers.get('X-Workbench-Token') != csrf:
